@@ -1,17 +1,17 @@
 import React from 'react';
-import './NewTodoInput.css'
+import './NewTodoInput.css';
 
-function NewTodoInput () {
+function NewTodoInput() {
   return (
     <div>
       <input
         type="text"
-        className='new-input'
-        placeholder='Write your name here'
+        className="new-input"
+        placeholder="Write your name here"
         />
       <button>Add</button>
     </div>
-  )
-};
+  );
+}
 
 export default NewTodoInput;

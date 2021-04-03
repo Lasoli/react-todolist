@@ -1,3 +1,15 @@
 li {
   flex-direction: column;
 }
+
+.itemDone {
+  background: green;
+}
+
+.itemNotDone {
+  background: red;
+}
+
+.testClass {
+  background: blue;
+}
