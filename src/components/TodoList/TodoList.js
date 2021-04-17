@@ -2,10 +2,9 @@ import React from 'react';
 import Todo from '../Todo/Todo';
 import './TodoList.css';
 
-function TodoList({ todos, deleteTodo, completedTodo }) {
+function TodoList({ todos, deleteTodo, completedTodo, editTodo }) {
   return (
     <div>
-
     <ul>
         {todos.map((todo, index) => (
       // react Dom expect unique element on the document
@@ -18,10 +17,10 @@ function TodoList({ todos, deleteTodo, completedTodo }) {
         isDone={todo.isDone}
         deleteTodo={deleteTodo}
         completedTodo={completedTodo}
+        editTodo={editTodo}
         />
     ))}
     </ul>
-
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './NewTodoInput.css'
 
 function NewTodoInput ({ addTodo }) {
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState("");
  
 
     function handleOnKeyDown({ keyCode, target }) {
@@ -22,7 +22,7 @@ function NewTodoInput ({ addTodo }) {
 
         addTodo(newTodo);
 
-        setInputValue('');
+        setInputValue("");
     }
 
 
@@ -36,7 +36,7 @@ function NewTodoInput ({ addTodo }) {
         onKeyDown={handleOnKeyDown}
         onChange={handleInputValue}
         />
-      <button id="addBtn" onClick={saveNewTodo}>Add</button>
+      <button id="addBtn" onClick={saveNewTodo}>+</button>
     </div>
   )
 };

@@ -49,7 +49,7 @@ import TodoList from './components/TodoList/TodoList';
 //fetching our todos from localStorage
 // THIS ARE DUMMY DATA TO PRETEND TO BE OUR LOCALSTORAGE
 // fetching our todos from localStorage
-const todosData = [
+ /* const todosData = [
   {
     id: '54363',
     title: 'Do this',
@@ -66,23 +66,28 @@ const todosData = [
     isDone: false
   },
 ];
+*/
+
+
 
 //const addTodoBtn = "Add new to-do button";
 
 export default function App() {
-  const [todosState, setTodos] = useState(todosData);
+  const [todosState, setTodos] = useState(JSON.parse(localStorage.getItem("todosData")) || []);
   // console.log("anything");
   function handleDelete(todoId) {
        // console.log("Callback function");
-        const newTodos = todosState.filter(({ id }) => id !== todoId);
-        setTodos(newTodos);
+        //const newTodos = todosState.filter(({ id }) => id !== todoId);
+        //setTodos(newTodos);
+        save(todosState.filter(({ id }) => id !== todoId));
         }
 
     function handleNewTodo(newTodo) {
        // console.log("add new todo", newTodo);
         const newTodos = [newTodo, ...todosState];
         //console.log(newTodos);
-        setTodos(newTodos);
+        //setTodos(newTodos);
+        save(newTodos);
     }
 
     function handleCompletedTodo(todoId) {
@@ -92,7 +97,30 @@ export default function App() {
             }
         return todo;
         });
-        setTodos(newTodos);
+        //setTodos(newTodos);
+        save(newTodos);
+    }
+
+    function clearAll() {
+        alert("Are you sure you want to delete your to-do list?");
+        save([]);
+    }
+
+    function save(newState) {
+     setTodos(() => {    
+        localStorage.setItem("todosData", JSON.stringify(newState));
+        return newState;
+     });
+    }
+
+    function handleEdit(editedId, editedTitle) {
+       const newTodos = todosState.map((todo) => {
+      if (todo.id === editedId) {
+        todo.title = editedTitle;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
     }
 
   return (
@@ -118,11 +146,61 @@ export default function App() {
           todos={todosState} 
           deleteTodo={handleDelete}
           completedTodo={handleCompletedTodo}
+          editTodo={handleEdit}
           />
         </div>
       
-        <button id="clearBtn" onClick={() => setTodos([])}>Clear all</button>
+        <button id="clearBtn" onClick={() => clearAll()}>Clear all</button>
         </main>
     </div>
   );
 }
+
+
+/* 6_ Delete Function
+ -> onClick event in the delete item button 
+ -> call func call deleteTodoById
+ -> inside deleteTodoById we return the todo id
+ -> from Appjs we send down a prop to Todo: prop: deleteTodo
+ -> deleteTodo is a callback func. A func that return a value of another func
+
+7_ AddNew Todo
+  -> add Event listener on Clicking Enter
+  -> listen to onChange event, take event obj and key
+  -> check if key === 13 then create new todo obj
+  -> send the newTodo to our Appjs
+  -> Appjs grab newTodo in handleNewTodo()
+  -> setTodos(newTodo)
+
+8_ isDone btn
+   Todojs
+  1_ deconsturct from functin props the completeTodo
+  2_ checked={isDone}
+  3_ add onChange event on the input
+  4_ call completeTodo() and return todo id
+
+   Appjs
+  1_ add prop to <TaskList />: completeTodo with value handleCompleteTodo
+  2_ grab todoId as func arg
+  3_ create newTodos cont
+  4_ map trought all todos 
+  5_ if todo.id === todoId 
+    -> reassign todo.isDone to opposito of todo.isDone
+  6_ return todo
+  7_ setTodos(newTodos)
+
+6_ create Edit Task UI
+    1_ create a new React component EditTodo.js
+    2_ We will create input field + button (edit todo)
+    3_ input default value is the current todo value
+    4_ when input value is changed, save the new value in the state
+       -> here you will need to use useState 
+    5_ when user click the button, save the value of the field in the todo array
+       -> Here you will need to use a callback function and handle the function in App.js
+    6_ go to Todo.js and add a edit button
+    7_ when click edit, conditionally show Edit.js or input+text+delete /edit buttons
+
+7_ Save and retrieve items from local storage
+    -> save items when: add new todo, delete todo, edit todo, isDone todo
+    -> retrieve items on Appjs and add them as default state
+ */
