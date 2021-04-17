@@ -39,7 +39,8 @@
 // 3_ decostructive props properties in a variable
 //const { labelBtn, placeholder } = props;
 
-import logo from './logo.svg';
+//import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 import NewTodoInput from './components/NewTodoInput/NewTodoInput.js';
 import TodoList from './components/TodoList/TodoList';
@@ -48,7 +49,7 @@ import TodoList from './components/TodoList/TodoList';
 //fetching our todos from localStorage
 // THIS ARE DUMMY DATA TO PRETEND TO BE OUR LOCALSTORAGE
 // fetching our todos from localStorage
-const todos = [
+const todosData = [
   {
     id: '54363',
     title: 'Do this',
@@ -69,26 +70,59 @@ const todos = [
 //const addTodoBtn = "Add new to-do button";
 
 export default function App() {
+  const [todosState, setTodos] = useState(todosData);
+  // console.log("anything");
+  function handleDelete(todoId) {
+       // console.log("Callback function");
+        const newTodos = todosState.filter(({ id }) => id !== todoId);
+        setTodos(newTodos);
+        }
+
+    function handleNewTodo(newTodo) {
+       // console.log("add new todo", newTodo);
+        const newTodos = [newTodo, ...todosState];
+        //console.log(newTodos);
+        setTodos(newTodos);
+    }
+
+    function handleCompletedTodo(todoId) {
+        const newTodos = todosState.map((todo) => {
+            if (todo.id === todoId) {
+                todo.isDone = !todo.isDone
+            }
+        return todo;
+        });
+        setTodos(newTodos);
+    }
+
   return (
     <div className="App">
-      <header className="myHeaderClass">
-        <h1>Navbar at some point</h1>
+      <header className="App-header container bg-black shadow">
+            <button className="open-main-nav">
+			<span className="burger"></span>
+            	<span className="burger-text">Menu</span>
+                </button>
+      <p id="date">Current date</p>
+        <h1>My daily <strong>to-do</strong> list</h1>
+        <h3>A stitch in time saves nine...</h3>
       </header>
-
       <main>
-
-        <div id="myDIV" className="header container bg-black shadow">
-        <div className="row">
-        <div className="col-9" id="date"></div>
-          <h2>Daily To-Do List</h2>
+          <NewTodoInput addTodo={handleNewTodo} />
+          <div>
+        <select name="todos" id="select">
+           <option value="all">All to-dos</option>
+           <option value="completed">Completed</option>
+           <option value="uncompleted">Uncompleted</option>
+       </select>
+          <TodoList 
+          todos={todosState} 
+          deleteTodo={handleDelete}
+          completedTodo={handleCompletedTodo}
+          />
         </div>
-          <NewTodoInput />
-          <TodoList todos={todos} />
-        </div>
-
-      </main>
-
-      <footer>Copyright</footer>
+      
+        <button id="clearBtn" onClick={() => setTodos([])}>Clear all</button>
+        </main>
     </div>
   );
 }

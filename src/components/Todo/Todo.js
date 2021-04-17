@@ -7,13 +7,26 @@ import './Todo.css';
 // 3_ display conditionally the class of the todo
 // 4_ display conditionally the contenteditable attribute
 
-function Todo({ title, isDone }) {
+function Todo ({ title, isDone, id, deleteTodo, completedTodo }) {
+    const isEdit = false; // placeholder, change state to true here by clicking
   return (
-    <li className={isDone ? 'itemDone testClass' : 'itemNotDone' }>
-      <input type="checkbox" defaultChecked={isDone} />
-      <p>{title}</p>
-      <button>Delete</button>
+  <div className="container">
+  {isEdit ? (
+  <p>Show Edit.js component</p>
+  ) : (
+  <li className={isDone ? "itemDone testClass row" : "itemNotDone row"}>
+      <input 
+      className="col-2 checkbox"
+      type="checkbox" 
+      checked={isDone}
+      onChange={() => completedTodo(id)}
+      />
+      <p className="col-7">{title}</p>
+        <button className="col-2" id="editBtn">EDIT</button>
+      <button className="col-1" id="deleteBtn" onClick={() => deleteTodo(id)}>X</button>
     </li>
+    )}
+    </div>
   );
 }
 

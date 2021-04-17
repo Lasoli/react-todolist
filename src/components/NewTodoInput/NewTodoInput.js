@@ -1,17 +1,44 @@
-import React from 'react';
-import './NewTodoInput.css';
+import React, { useState } from 'react';
+import './NewTodoInput.css'
 
-function NewTodoInput() {
+function NewTodoInput ({ addTodo }) {
+    const [inputValue, setInputValue] = useState('');
+ 
+
+    function handleOnKeyDown({ keyCode, target }) {
+        if (keyCode === 13) saveNewTodo();
+    }
+
+    function handleInputValue({ target }) {
+        setInputValue(target.value);
+    }
+
+    function saveNewTodo() {
+        const newTodo = {
+                id: (Date.now() + Math.random()).toString(),
+                title: inputValue,
+                isDone: false
+        };
+
+        addTodo(newTodo);
+
+        setInputValue('');
+    }
+
+
   return (
     <div>
       <input
         type="text"
-        className="new-input"
-        placeholder="Write your name here"
+        value={inputValue}
+        className='new-input'
+        placeholder='My first to-do...'
+        onKeyDown={handleOnKeyDown}
+        onChange={handleInputValue}
         />
-      <button>Add</button>
+      <button id="addBtn" onClick={saveNewTodo}>Add</button>
     </div>
-  );
-}
+  )
+};
 
 export default NewTodoInput;
